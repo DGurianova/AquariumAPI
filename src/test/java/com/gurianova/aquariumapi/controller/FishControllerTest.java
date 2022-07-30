@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 class FishControllerTest {
 
@@ -36,19 +36,19 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1,"AngelFish",3,"Flakes"));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "AngelFish", 3, "Flakes"));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
-        Assertions.assertEquals( HttpStatus.OK,response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Fish actualFish = response.getBody();
 
         Assertions.assertNotNull(actualFish);
-        Assertions.assertEquals( 1,actualFish.getId());
-        Assertions.assertEquals("AngelFish",actualFish.getName());
-        Assertions.assertEquals(3,actualFish.getAgeYears());
-        Assertions.assertEquals( "Flakes",actualFish.getPreferredFood());
+        Assertions.assertEquals(1, actualFish.getId());
+        Assertions.assertEquals("AngelFish", actualFish.getName());
+        Assertions.assertEquals(3, actualFish.getAgeYears());
+        Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
     }
 
 
@@ -57,21 +57,20 @@ class FishControllerTest {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes");
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1,"ReplacedFish",2,"Flakes"));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "ReplacedFish", 2, "Flakes"));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
-        Assertions.assertEquals( HttpStatus.OK,response.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
 
         Fish actualFish = response.getBody();
 
         Assertions.assertNotNull(actualFish);
-        //TODO
-        //Looks like replacement does not work , ID changes during this call.
-        Assertions.assertEquals( 1,actualFish.getId());
-        Assertions.assertEquals("ReplacedFish",actualFish.getName());
-        Assertions.assertEquals(2,actualFish.getAgeYears());
-        Assertions.assertEquals( "Flakes",actualFish.getPreferredFood());
+
+        Assertions.assertEquals(1, actualFish.getId());
+        Assertions.assertEquals("ReplacedFish", actualFish.getName());
+        Assertions.assertEquals(2, actualFish.getAgeYears());
+        Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
     }
 
     @Test
@@ -81,11 +80,31 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        //Verify request succeed
-        //TODO Validate  that all fishes are in proper order (marshal body to json structure)
+
         ResponseEntity<String> result = restTemplate.getForEntity(uri, String.class);
         Assert.assertEquals(200, result.getStatusCodeValue());
-        Assert.assertEquals(true, result.getBody().contains("AngelFish"));
+        Assert.assertEquals(true, result.getBody().contains("ReplacedFish"));
     }
 
+    @Test
+    public void t04_replaceWhenIdIsNotInDbSuccess() throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+
+        final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
+        URI uri = new URI(baseUrl);
+
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(999, "AngelFish", 3, "Flakes"));
+        ResponseEntity<Fish> response = restTemplate
+                .exchange(uri, HttpMethod.PUT, request, Fish.class);
+
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Fish actualFish = response.getBody();
+
+        Assertions.assertNotNull(actualFish);
+        Assertions.assertEquals(2, actualFish.getId());
+        Assertions.assertEquals("AngelFish", actualFish.getName());
+        Assertions.assertEquals(3, actualFish.getAgeYears());
+        Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
+    }
 }
