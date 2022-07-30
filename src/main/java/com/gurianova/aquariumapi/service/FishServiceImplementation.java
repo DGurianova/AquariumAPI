@@ -35,6 +35,7 @@ public class FishServiceImplementation implements FishService {
 
     private ResponseFishDTO convertToDTO(Fish fish) {
         return ResponseFishDTO.builder()
+                .id(fish.getId())
                 .name(fish.getName())
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())

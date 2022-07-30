@@ -15,12 +15,12 @@ public class FishController {
     @Autowired
     private FishService fishService;
 
-    @PutMapping("/fishes")
+    @PutMapping(value = "/fishes", consumes = "application/json", produces = "application/json")
     public ResponseFishDTO createOrEditFish(@RequestBody RequestFishDTO request) {
        return fishService.createOrEditFish(request);
     }
 
-    @GetMapping("/fishes")
+    @GetMapping(value = "/fishes",produces = "application/json")
     public List<ResponseFishDTO> getAllFishes() {
         return fishService.getAllFishes();
     }

@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 @Builder
 public class ResponseFishDTO {
+    private Integer id;
     private String name;
     private Integer ageYears;
     private String preferredFood;
