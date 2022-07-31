@@ -36,7 +36,7 @@ public class FishController {
 
     @PostMapping(value = "/fishes/search", produces = "application/json")
     public List<ResponseFishDTO> searchFish(@RequestBody RequestFishDTO request) {
-        String baseQuery = "select * from fish f where";
+        String baseQuery = "SELECT f FROM Fish f WHERE";
         if (request.getName() != null) {
             baseQuery = baseQuery + "  fish_name  = '" + request.getName() + "'";
         }
