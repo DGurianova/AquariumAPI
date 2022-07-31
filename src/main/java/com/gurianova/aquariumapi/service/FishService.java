@@ -12,5 +12,7 @@ public interface FishService {
 
     List<ResponseFishDTO> getAllFishes();
 
+   ResponseFishDTO convertToDTO(Fish fish);
+
 
 }

@@ -39,7 +39,8 @@ public class FishServiceImplementation implements FishService {
                 .collect(Collectors.toList());
     }
 
-    private ResponseFishDTO convertToDTO(Fish fish) {
+    @Override
+    public ResponseFishDTO convertToDTO(Fish fish) {
         return ResponseFishDTO.builder()
                 .id(fish.getId())
                 .name(fish.getName())
