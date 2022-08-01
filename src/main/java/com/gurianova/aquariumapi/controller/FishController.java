@@ -7,17 +7,17 @@ import com.gurianova.aquariumapi.dto.ResponseFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseSearchFishErrorDTO;
 import com.gurianova.aquariumapi.exception.AquariumErrorCodes;
-import com.gurianova.aquariumapi.exception.ServedByOtherMethodException;
+
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import com.gurianova.aquariumapi.service.FishService;
-import org.hibernate.hql.internal.ast.QuerySyntaxException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -88,6 +88,6 @@ public class FishController {
             List<ResponseSearchFishDTO> response = Collections.singletonList((ResponseSearchFishDTO) errorResponse);
             return response;
         }
-        }
     }
+}
 

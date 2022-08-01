@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -36,14 +37,14 @@ class FishServiceImplementationTest {
                 "Goldfish",
                 2,
                 "worms",
-                "25.07.22"
+                LocalDate.of(2022, 07, 25)
         );
 
         Fish fishManuallyCreated = Fish.builder()
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
-                .dateOfPurchase("25.07.22")
+                .dateOfPurchase(LocalDate.of(2022, 07, 25))
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -66,7 +67,7 @@ class FishServiceImplementationTest {
                 "Goldfish",
                 2,
                 "worms",
-                "25.07.22"
+                LocalDate.of(2022, 07, 25)
         );
 
         Fish fishManuallyCreated = Fish.builder()
@@ -74,7 +75,7 @@ class FishServiceImplementationTest {
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
-                .dateOfPurchase("25.07.22")
+                .dateOfPurchase(LocalDate.of(2022, 07, 25))
                 .build();
 
         service.setFishRepository(mockFishRepository);

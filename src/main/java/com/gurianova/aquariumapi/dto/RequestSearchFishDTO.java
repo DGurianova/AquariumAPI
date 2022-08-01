@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,5 +16,5 @@ public class RequestSearchFishDTO {
     private String name;
     private Integer ageYears;
     private String preferredFood;
-    private String dateOfPurchase;
+    private LocalDate dateOfPurchase;
 }
