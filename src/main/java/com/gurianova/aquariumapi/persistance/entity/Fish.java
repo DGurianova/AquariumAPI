@@ -23,4 +23,6 @@ public class Fish {
     private Integer ageYears;
     @Column(name = "preferred_food")
     private String preferredFood;
+    @Column(name = "date_of_purchase")
+    private String dateOfPurchase;
 }

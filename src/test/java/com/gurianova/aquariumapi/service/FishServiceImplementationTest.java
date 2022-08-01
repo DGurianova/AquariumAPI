@@ -35,13 +35,15 @@ class FishServiceImplementationTest {
                 null,
                 "Goldfish",
                 2,
-                "worms"
+                "worms",
+                "25.07.22"
         );
 
         Fish fishManuallyCreated = Fish.builder()
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
+                .dateOfPurchase("25.07.22")
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -54,6 +56,7 @@ class FishServiceImplementationTest {
         assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
         assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
         assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
     }
 
     @Test
@@ -62,7 +65,8 @@ class FishServiceImplementationTest {
                 1,
                 "Goldfish",
                 2,
-                "worms"
+                "worms",
+                "25.07.22"
         );
 
         Fish fishManuallyCreated = Fish.builder()
@@ -70,6 +74,7 @@ class FishServiceImplementationTest {
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
+                .dateOfPurchase("25.07.22")
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -82,5 +87,6 @@ class FishServiceImplementationTest {
         assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
         assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
         assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
     }
 }

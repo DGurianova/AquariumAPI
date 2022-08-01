@@ -14,4 +14,5 @@ public class RequestSearchFishDTO {
     private String name;
     private Integer ageYears;
     private String preferredFood;
+    private String dateOfPurchase;
 }

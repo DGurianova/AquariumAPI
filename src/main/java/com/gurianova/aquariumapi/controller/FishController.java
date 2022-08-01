@@ -64,6 +64,12 @@ public class FishController {
             }//If queryParameterAlreadyExists is true , getAgeYears() was not null and was already added to query , so we need to add additional AND before add next parameter
             baseQuery = baseQuery + " preferred_food  = '" + request.getPreferredFood() + "'";
         }
+        if (request.getDateOfPurchase() != null) {
+            if (queryParameterAlreadyExists) {
+                baseQuery = baseQuery + " and ";
+            }
+            baseQuery = baseQuery + " date_of_purchase  = '" + request.getDateOfPurchase() + "'";
+        }
 
         try {
             TypedQuery<Fish> query = manager.createQuery(baseQuery, Fish.class);

@@ -44,7 +44,7 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "AngelFish", 3, "Flakes"));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "AngelFish", 3, "Flakes", "25.07.22"));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -57,6 +57,7 @@ class FishControllerTest {
         Assertions.assertEquals("AngelFish", actualFish.getName());
         Assertions.assertEquals(3, actualFish.getAgeYears());
         Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
+        Assertions.assertEquals("25.07.22", actualFish.getDateOfPurchase());
     }
 
 
@@ -65,7 +66,7 @@ class FishControllerTest {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes");
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "ReplacedFish", 2, "Flakes"));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "ReplacedFish", 2, "Flakes", "25.07.22"));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -79,6 +80,7 @@ class FishControllerTest {
         Assertions.assertEquals("ReplacedFish", actualFish.getName());
         Assertions.assertEquals(2, actualFish.getAgeYears());
         Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
+        Assertions.assertEquals("25.07.22", actualFish.getDateOfPurchase());
     }
 
     @Test
@@ -101,7 +103,7 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(999, "AngelFish", 3, "Flakes"));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(999, "AngelFish", 3, "Flakes", "25.07.22"));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -114,6 +116,7 @@ class FishControllerTest {
         Assertions.assertEquals("AngelFish", actualFish.getName());
         Assertions.assertEquals(3, actualFish.getAgeYears());
         Assertions.assertEquals("Flakes", actualFish.getPreferredFood());
+        Assertions.assertEquals("25.07.22", actualFish.getDateOfPurchase());
     }
 
     @Test
@@ -122,7 +125,7 @@ class FishControllerTest {
 
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes/search";
         URI uri = new URI(baseUrl);
-        HttpEntity<RequestSearchFishDTO> request = new HttpEntity(new RequestSearchFishDTO(1, "AngelFish", 3, "Flakes"));
+        HttpEntity<RequestSearchFishDTO> request = new HttpEntity(new RequestSearchFishDTO(1, "AngelFish", 3, "Flakes", "25.07.22"));
         ResponseEntity<ResponseSearchFishDTO[]> response = restTemplate
                 .exchange(uri, HttpMethod.POST, request, ResponseSearchFishDTO[].class);
 
@@ -131,6 +134,7 @@ class FishControllerTest {
         Assert.assertEquals("AngelFish", (response.getBody()[0].getName()));
         Assert.assertEquals((Integer) 3, (response.getBody()[0].getAgeYears()));
         Assert.assertEquals("Flakes", (response.getBody()[0].getPreferredFood()));
+        Assert.assertEquals("25.07.22", (response.getBody()[0].getDateOfPurchase()));
     }
 
     @Test
