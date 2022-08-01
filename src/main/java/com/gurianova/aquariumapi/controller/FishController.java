@@ -4,6 +4,9 @@ package com.gurianova.aquariumapi.controller;
 import com.gurianova.aquariumapi.dto.RequestFishDTO;
 import com.gurianova.aquariumapi.dto.RequestSearchFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
+import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
+import com.gurianova.aquariumapi.dto.ResponseSearchFishErrorDTO;
+import com.gurianova.aquariumapi.exception.AquariumErrorCodes;
 import com.gurianova.aquariumapi.exception.ServedByOtherMethodException;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import com.gurianova.aquariumapi.service.FishService;
@@ -14,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +44,7 @@ public class FishController {
     }
 
     @PostMapping(value = "/fishes/search", produces = "application/json")
-    public List<ResponseFishDTO> searchFish(@RequestBody RequestSearchFishDTO request) {
+    public List<ResponseSearchFishDTO> searchFish(@RequestBody RequestSearchFishDTO request) {
         String baseQuery = "SELECT f FROM Fish f WHERE";
         boolean queryParameterAlreadyExists = false;
         if (request.getName() != null) {
@@ -62,14 +67,20 @@ public class FishController {
 
         try {
             TypedQuery<Fish> query = manager.createQuery(baseQuery, Fish.class);
-            List<ResponseFishDTO> collect;
+            List<ResponseSearchFishDTO> collect;
             collect = query.getResultList()
                     .stream()
-                    .map(fishService::convertToDTO)
+                    .map(fishService::convertToSearchDTO)
                     .collect(Collectors.toList());
             return collect;
         } catch (IllegalArgumentException e) {
-            throw new ServedByOtherMethodException();
+            ResponseSearchFishErrorDTO errorResponse = new ResponseSearchFishErrorDTO(
+                    AquariumErrorCodes.SEARCH_FISH_PAYLOAD_HAS_NO_PARAMETERS.getCode(),
+                    AquariumErrorCodes.SEARCH_FISH_PAYLOAD_HAS_NO_PARAMETERS.getDescription()
+            );
+            List<ResponseSearchFishDTO> response = Collections.singletonList((ResponseSearchFishDTO) errorResponse);
+            return response;
+        }
         }
     }
-}
+
