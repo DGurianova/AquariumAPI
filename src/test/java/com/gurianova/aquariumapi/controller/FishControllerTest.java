@@ -4,6 +4,8 @@ import com.gurianova.aquariumapi.TestingConstants;
 import com.gurianova.aquariumapi.dto.RequestSearchFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
+import com.gurianova.aquariumapi.dto.ResponseSearchFishErrorDTO;
+import com.gurianova.aquariumapi.exception.AquariumErrorCodes;
 import com.gurianova.aquariumapi.exception.ServedByOtherMethodException;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import org.junit.Assert;
@@ -138,8 +140,12 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes/search";
         URI uri = new URI(baseUrl);
         HttpEntity<RequestSearchFishDTO> request = new HttpEntity(new RequestSearchFishDTO());
-//TODO fix this error
-        HttpServerErrorException.InternalServerError aThrows = assertThrows(HttpServerErrorException.InternalServerError.class, () -> restTemplate
-                .exchange(uri, HttpMethod.POST, request, ResponseSearchFishDTO[].class));
+
+        ResponseEntity<ResponseSearchFishErrorDTO[]> response = restTemplate
+                .exchange(uri, HttpMethod.POST, request, ResponseSearchFishErrorDTO[].class);
+
+        Assert.assertEquals(200, response.getStatusCodeValue());
+        Assert.assertEquals(AquariumErrorCodes.SEARCH_FISH_PAYLOAD_HAS_NO_PARAMETERS.getCode(), (response.getBody()[0].getCode()));
+        Assert.assertEquals(AquariumErrorCodes.SEARCH_FISH_PAYLOAD_HAS_NO_PARAMETERS.getDescription(), (response.getBody()[0].getDescription()));
     }
 }
