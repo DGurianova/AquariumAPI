@@ -2,10 +2,14 @@ package com.gurianova.aquariumapi.controller;
 
 
 import com.gurianova.aquariumapi.dto.RequestFishDTO;
+import com.gurianova.aquariumapi.dto.RequestSearchFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
+import com.gurianova.aquariumapi.exception.ServedByOtherMethodException;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import com.gurianova.aquariumapi.service.FishService;
+import org.hibernate.hql.internal.ast.QuerySyntaxException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -35,8 +39,7 @@ public class FishController {
     }
 
     @PostMapping(value = "/fishes/search", produces = "application/json")
-    public List<ResponseFishDTO> searchFish(@RequestBody RequestFishDTO request) {
-        //TODO Add exception handling  if no parameters provided  ,this will equal to find ALL fishes, which is served by other method in controller
+    public List<ResponseFishDTO> searchFish(@RequestBody RequestSearchFishDTO request) {
         String baseQuery = "SELECT f FROM Fish f WHERE";
         boolean queryParameterAlreadyExists = false;
         if (request.getName() != null) {
@@ -44,18 +47,29 @@ public class FishController {
             queryParameterAlreadyExists = true;
         }
         if (request.getAgeYears() != null) {
-            if (queryParameterAlreadyExists){ baseQuery = baseQuery + " and "; } //If queryParameterAlreadyExists is  true , getName  was not null and was already added to query , so we need to add additional AND before add next parameter
+            if (queryParameterAlreadyExists) {
+                baseQuery = baseQuery + " and ";
+            } //If queryParameterAlreadyExists is  true , getName  was not null and was already added to query , so we need to add additional AND before add next parameter
             baseQuery = baseQuery + " fish_age_years  = " + request.getAgeYears() + "";
             queryParameterAlreadyExists = true;                                  //Because we just added new param with AND , we need to set this flag to true , to signal the next if to add AND
         }
         if (request.getPreferredFood() != null) {
-            if (queryParameterAlreadyExists){baseQuery = baseQuery + " and ";}//If queryParameterAlreadyExists is true , getAgeYears() was not null and was already added to query , so we need to add additional AND before add next parameter
+            if (queryParameterAlreadyExists) {
+                baseQuery = baseQuery + " and ";
+            }//If queryParameterAlreadyExists is true , getAgeYears() was not null and was already added to query , so we need to add additional AND before add next parameter
             baseQuery = baseQuery + " preferred_food  = '" + request.getPreferredFood() + "'";
         }
-        TypedQuery<Fish> query = manager.createQuery(baseQuery, Fish.class);
-        return query.getResultList()
-                .stream()
-                .map(fishService::convertToDTO)
-                .collect(Collectors.toList());
+
+        try {
+            TypedQuery<Fish> query = manager.createQuery(baseQuery, Fish.class);
+            List<ResponseFishDTO> collect;
+            collect = query.getResultList()
+                    .stream()
+                    .map(fishService::convertToDTO)
+                    .collect(Collectors.toList());
+            return collect;
+        } catch (IllegalArgumentException e) {
+            throw new ServedByOtherMethodException();
+        }
     }
 }
