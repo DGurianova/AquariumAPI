@@ -63,6 +63,7 @@ public class FishController {
                 baseQuery = baseQuery + " and ";
             }//If queryParameterAlreadyExists is true , getAgeYears() was not null and was already added to query , so we need to add additional AND before add next parameter
             baseQuery = baseQuery + " preferred_food  = '" + request.getPreferredFood() + "'";
+            queryParameterAlreadyExists = true;
         }
         if (request.getDateOfPurchase() != null) {
             if (queryParameterAlreadyExists) {

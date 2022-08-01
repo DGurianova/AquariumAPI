@@ -60,6 +60,7 @@ public class FishServiceImplementation implements FishService {
                 .name(fish.getName())
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())
+                .dateOfPurchase(fish.getDateOfPurchase())
                 .build();
 
     }

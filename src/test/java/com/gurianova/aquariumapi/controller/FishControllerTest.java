@@ -138,7 +138,7 @@ class FishControllerTest {
     }
 
     @Test
-    public void t06_testSearchFishesIsUnSuccessful() throws URISyntaxException {
+    public void t06_testSearchFishesErrorReturnedIfNoPayloadProvided() throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
 
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes/search";
