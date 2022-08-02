@@ -3,6 +3,8 @@ package com.gurianova.aquariumapi.persistance.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "fish")
@@ -23,4 +25,6 @@ public class Fish {
     private Integer ageYears;
     @Column(name = "preferred_food")
     private String preferredFood;
+    @Column(name = "date_of_purchase")
+    private LocalDate dateOfPurchase;
 }

@@ -28,6 +28,7 @@ public class FishServiceImplementation implements FishService {
         Fish fish = fishBuilder.name(request.getName())
                 .ageYears(request.getAgeYears())
                 .preferredFood(request.getPreferredFood())
+                .dateOfPurchase(request.getDateOfPurchase())
                 .build();
         return convertToDTO(fishRepository.save(fish));
     }
@@ -47,6 +48,7 @@ public class FishServiceImplementation implements FishService {
                 .name(fish.getName())
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())
+                .dateOfPurchase(fish.getDateOfPurchase())
                 .build();
 
     }
@@ -58,6 +60,7 @@ public class FishServiceImplementation implements FishService {
                 .name(fish.getName())
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())
+                .dateOfPurchase(fish.getDateOfPurchase())
                 .build();
 
     }

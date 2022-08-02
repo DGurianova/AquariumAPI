@@ -12,6 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -35,13 +36,15 @@ class FishServiceImplementationTest {
                 null,
                 "Goldfish",
                 2,
-                "worms"
+                "worms",
+                LocalDate.of(2022, 07, 25)
         );
 
         Fish fishManuallyCreated = Fish.builder()
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
+                .dateOfPurchase(LocalDate.of(2022, 07, 25))
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -54,6 +57,7 @@ class FishServiceImplementationTest {
         assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
         assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
         assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
     }
 
     @Test
@@ -62,7 +66,8 @@ class FishServiceImplementationTest {
                 1,
                 "Goldfish",
                 2,
-                "worms"
+                "worms",
+                LocalDate.of(2022, 07, 25)
         );
 
         Fish fishManuallyCreated = Fish.builder()
@@ -70,6 +75,7 @@ class FishServiceImplementationTest {
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
+                .dateOfPurchase(LocalDate.of(2022, 07, 25))
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -82,5 +88,6 @@ class FishServiceImplementationTest {
         assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
         assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
         assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
     }
 }
