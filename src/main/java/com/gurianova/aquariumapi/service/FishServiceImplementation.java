@@ -2,6 +2,7 @@ package com.gurianova.aquariumapi.service;
 
 import com.gurianova.aquariumapi.dto.RequestFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
+import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import com.gurianova.aquariumapi.persistance.repository.FishRepository;
 import lombok.Setter;
@@ -39,8 +40,20 @@ public class FishServiceImplementation implements FishService {
                 .collect(Collectors.toList());
     }
 
-    private ResponseFishDTO convertToDTO(Fish fish) {
+    @Override
+    public ResponseFishDTO convertToDTO(Fish fish) {
         return ResponseFishDTO.builder()
+                .id(fish.getId())
+                .name(fish.getName())
+                .ageYears(fish.getAgeYears())
+                .preferredFood(fish.getPreferredFood())
+                .build();
+
+    }
+
+    @Override
+    public ResponseSearchFishDTO convertToSearchDTO(Fish fish) {
+        return ResponseSearchFishDTO.builder()
                 .id(fish.getId())
                 .name(fish.getName())
                 .ageYears(fish.getAgeYears())
