@@ -28,7 +28,7 @@ public class FishServiceImplementation implements FishService {
         Fish fish = fishBuilder.name(request.getName())
                 .ageYears(request.getAgeYears())
                 .preferredFood(request.getPreferredFood())
-                .dateOfPurchase(request.getDateOfPurchase())
+                .dateOfPurchase(DateFormat.parseTimestamp(request.getDateOfPurchase()))
                 .build();
         return convertToDTO(fishRepository.save(fish));
     }

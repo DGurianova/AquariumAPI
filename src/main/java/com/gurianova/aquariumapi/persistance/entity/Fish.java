@@ -3,6 +3,7 @@ package com.gurianova.aquariumapi.persistance.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 
@@ -26,5 +27,8 @@ public class Fish {
     @Column(name = "preferred_food")
     private String preferredFood;
     @Column(name = "date_of_purchase")
-    private LocalDate dateOfPurchase;
+    private Timestamp dateOfPurchase;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "owner_id")
+    private Owner owner;
 }

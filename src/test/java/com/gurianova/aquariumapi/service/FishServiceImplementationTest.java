@@ -37,14 +37,14 @@ class FishServiceImplementationTest {
                 "Goldfish",
                 2,
                 "worms",
-                LocalDate.of(2022, 07, 25)
+                "2022-07-25"
         );
 
         Fish fishManuallyCreated = Fish.builder()
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
-                .dateOfPurchase(LocalDate.of(2022, 07, 25))
+                .dateOfPurchase(DateFormat.parseTimestamp("2022-07-25"))
                 .build();
 
         service.setFishRepository(mockFishRepository);
@@ -67,7 +67,7 @@ class FishServiceImplementationTest {
                 "Goldfish",
                 2,
                 "worms",
-                LocalDate.of(2022, 07, 25)
+                "2022-07-25"
         );
 
         Fish fishManuallyCreated = Fish.builder()
@@ -75,7 +75,7 @@ class FishServiceImplementationTest {
                 .name("Goldfish")
                 .ageYears(2)
                 .preferredFood("worms")
-                .dateOfPurchase(LocalDate.of(2022, 07, 25))
+                .dateOfPurchase(DateFormat.parseTimestamp("2022-07-25"))
                 .build();
 
         service.setFishRepository(mockFishRepository);

@@ -15,7 +15,7 @@ public class RequestFishDTO {
     private String name;
     private Integer ageYears;
     private String preferredFood;
-    private LocalDate dateOfPurchase;
+    private String dateOfPurchase;
 
 
 }

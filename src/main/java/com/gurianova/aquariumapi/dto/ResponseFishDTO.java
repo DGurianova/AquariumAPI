@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 
 
@@ -15,5 +16,5 @@ public class ResponseFishDTO {
     private String name;
     private Integer ageYears;
     private String preferredFood;
-    private LocalDate dateOfPurchase;
+    private Timestamp dateOfPurchase;
 }
