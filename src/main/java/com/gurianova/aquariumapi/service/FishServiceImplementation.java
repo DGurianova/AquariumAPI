@@ -29,6 +29,7 @@ public class FishServiceImplementation implements FishService {
                 .ageYears(request.getAgeYears())
                 .preferredFood(request.getPreferredFood())
                 .dateOfPurchase(DateFormat.parseTimestamp(request.getDateOfPurchase()))
+                .owner(request.getOwner())
                 .build();
         return convertToDTO(fishRepository.save(fish));
     }
@@ -49,6 +50,7 @@ public class FishServiceImplementation implements FishService {
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())
                 .dateOfPurchase(fish.getDateOfPurchase())
+                .owner(fish.getOwner())
                 .build();
 
     }
@@ -61,6 +63,7 @@ public class FishServiceImplementation implements FishService {
                 .ageYears(fish.getAgeYears())
                 .preferredFood(fish.getPreferredFood())
                 .dateOfPurchase(fish.getDateOfPurchase())
+                .owner(fish.getOwner())
                 .build();
 
     }

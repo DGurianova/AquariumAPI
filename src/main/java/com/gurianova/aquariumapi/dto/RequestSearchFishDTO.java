@@ -1,5 +1,6 @@
 package com.gurianova.aquariumapi.dto;
 
+import com.gurianova.aquariumapi.persistance.entity.Owner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class RequestSearchFishDTO {
     private Integer ageYears;
     private String preferredFood;
     private String dateOfPurchase;
+    private Owner owner;
 }

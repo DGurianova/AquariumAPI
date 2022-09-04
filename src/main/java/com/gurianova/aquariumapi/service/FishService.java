@@ -5,6 +5,7 @@ import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
 import org.springframework.stereotype.Service;
 import com.gurianova.aquariumapi.dto.RequestFishDTO;
+
 import java.util.List;
 
 @Service
@@ -13,9 +14,9 @@ public interface FishService {
 
     List<ResponseFishDTO> getAllFishes();
 
-   ResponseFishDTO convertToDTO(Fish fish);
+    ResponseFishDTO convertToDTO(Fish fish);
 
-    public ResponseSearchFishDTO convertToSearchDTO(Fish fish);
+   ResponseSearchFishDTO convertToSearchDTO(Fish fish);
 
 
 }
