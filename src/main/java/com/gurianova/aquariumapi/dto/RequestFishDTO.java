@@ -1,11 +1,11 @@
 package com.gurianova.aquariumapi.dto;
 
-import com.gurianova.aquariumapi.persistance.entity.Owner;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 
 
 @Data
@@ -16,6 +16,8 @@ public class RequestFishDTO {
     private String name;
     private Integer ageYears;
     private String preferredFood;
-    private String dateOfPurchase;
-    private Owner owner;
+    private Timestamp dateOfPurchase;
+    private RequestOwnerDTO requestOwnerDTO;
+
+
 }

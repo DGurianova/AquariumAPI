@@ -1,5 +1,6 @@
 package com.gurianova.aquariumapi.service;
 
+import com.gurianova.aquariumapi.dto.RequestOwnerDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
 import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
@@ -14,9 +15,11 @@ public interface FishService {
 
     List<ResponseFishDTO> getAllFishes();
 
+    List<ResponseFishDTO> getFishByOwnerId(RequestOwnerDTO request);
+
     ResponseFishDTO convertToDTO(Fish fish);
 
-   ResponseSearchFishDTO convertToSearchDTO(Fish fish);
+    ResponseSearchFishDTO convertToSearchDTO(Fish fish);
 
 
 }

@@ -1,6 +1,7 @@
 package com.gurianova.aquariumapi.controller;
 
 import com.gurianova.aquariumapi.TestingConstants;
+import com.gurianova.aquariumapi.dto.RequestOwnerDTO;
 import com.gurianova.aquariumapi.dto.RequestSearchFishDTO;
 
 import com.gurianova.aquariumapi.dto.ResponseSearchFishDTO;
@@ -8,6 +9,7 @@ import com.gurianova.aquariumapi.dto.ResponseSearchFishErrorDTO;
 import com.gurianova.aquariumapi.exception.AquariumErrorCodes;
 
 import com.gurianova.aquariumapi.persistance.entity.Fish;
+import com.gurianova.aquariumapi.persistance.entity.Owner;
 import com.gurianova.aquariumapi.service.DateFormat;
 import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +45,7 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "AngelFish", 3, "Flakes", DateFormat.parseTimestamp("2022-7-25"), null));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "AngelFish", 3, "Flakes", DateFormat.parseTimestamp("2022-7-25"), new Owner(1, "Peter","Jackson",DateFormat.parseTimestamp("2010-05-15"),"Texas, NT123" )));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -65,7 +67,7 @@ class FishControllerTest {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes");
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "ReplacedFish", 2, "Flakes", DateFormat.parseTimestamp("2022-7-25"), null));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(1, "ReplacedFish", 2, "Flakes", DateFormat.parseTimestamp("2022-7-25"), new Owner(1, "Peter","Jackson",DateFormat.parseTimestamp("2010-05-15"),"Texas, NT123" )));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -102,7 +104,7 @@ class FishControllerTest {
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes";
         URI uri = new URI(baseUrl);
 
-        HttpEntity<Fish> request = new HttpEntity<>(new Fish(999, "AngelFish", 3, "Flakes", DateFormat.parseTimestamp("2022-7-25"), null));
+        HttpEntity<Fish> request = new HttpEntity<>(new Fish(999, "AngelFish", 3, "Flakes", DateFormat.parseTimestamp("2022-7-25"), new Owner(1, "Peter","Jackson",DateFormat.parseTimestamp("2010-05-15"),"Texas, NT123" )));
         ResponseEntity<Fish> response = restTemplate
                 .exchange(uri, HttpMethod.PUT, request, Fish.class);
 
@@ -124,7 +126,7 @@ class FishControllerTest {
 
         final String baseUrl = TestingConstants.ENDPOINT_URL + randomServerPort + "/fishes/search";
         URI uri = new URI(baseUrl);
-        HttpEntity<RequestSearchFishDTO> request = new HttpEntity(new RequestSearchFishDTO(1, "AngelFish", 3, "Flakes", "2022-7-25"));
+        HttpEntity<RequestSearchFishDTO> request = new HttpEntity(new RequestSearchFishDTO(1, "AngelFish", 3, "Flakes", DateFormat.parseTimestamp("2022-7-25"), new RequestOwnerDTO(1, "Peter","Jackson",DateFormat.parseTimestamp("2010-05-15"),"Texas, NT123" )));
         ResponseEntity<ResponseSearchFishDTO[]> response = restTemplate
                 .exchange(uri, HttpMethod.POST, request, ResponseSearchFishDTO[].class);
 

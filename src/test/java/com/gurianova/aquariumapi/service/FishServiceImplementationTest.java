@@ -1,18 +1,21 @@
 package com.gurianova.aquariumapi.service;
 
 import com.gurianova.aquariumapi.dto.RequestFishDTO;
+import com.gurianova.aquariumapi.dto.RequestOwnerDTO;
 import com.gurianova.aquariumapi.dto.ResponseFishDTO;
+import com.gurianova.aquariumapi.dto.ResponseOwnerDTO;
 import com.gurianova.aquariumapi.persistance.entity.Fish;
+import com.gurianova.aquariumapi.persistance.entity.Owner;
 import com.gurianova.aquariumapi.persistance.repository.FishRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -23,71 +26,124 @@ class FishServiceImplementationTest {
     @MockBean
     FishRepository mockFishRepository = Mockito.mock(FishRepository.class);
 
-    private FishServiceImplementation service;
+    private FishServiceImplementation fishService;
+
+    @MockBean
+    OwnerService mockOwnerService = Mockito.mock(OwnerService.class);
+
 
     @BeforeEach
     private void beforeSetup() {
-        service = new FishServiceImplementation();
+        fishService = new FishServiceImplementation();
+        fishService.setOwnerService(mockOwnerService);
     }
 
     @Test
     void createOrEditFishWhenTheIdIsNotFound() {
-        RequestFishDTO dto = new RequestFishDTO(
+        RequestOwnerDTO requestOwnerDTO = new RequestOwnerDTO(
+                1,
+                "Peter",
+                "Jackson",
+                DateFormat.parseTimestamp("2010-05-15"),
+                "Texas 123N"
+        );
+        ResponseOwnerDTO responseOwnerDTO = new ResponseOwnerDTO(
+                1,
+                "Peter",
+                "Jackson",
+                DateFormat.parseTimestamp("2010-05-15"),
+                "Texas 123N"
+        );
+
+        RequestFishDTO requestFishDTO = new RequestFishDTO(
                 null,
                 "Goldfish",
                 2,
                 "worms",
-                "2022-07-25"
+                DateFormat.parseTimestamp("2022-07-25"),
+                requestOwnerDTO
+
+        );
+        ResponseFishDTO responseFishDTO = new ResponseFishDTO(
+                null,
+                "Goldfish",
+                2,
+                "worms",
+                DateFormat.parseTimestamp("2022-07-25"),
+                responseOwnerDTO
         );
 
-        Fish fishManuallyCreated = Fish.builder()
-                .name("Goldfish")
-                .ageYears(2)
-                .preferredFood("worms")
-                .dateOfPurchase(DateFormat.parseTimestamp("2022-07-25"))
-                .build();
+        Owner owner = Owner.builder().build();//Can be empty cause convertOwnerToDTO() is mocked below
 
-        service.setFishRepository(mockFishRepository);
-        when(mockFishRepository.findById(anyInt())).thenReturn(Optional.of(fishManuallyCreated));
-        when(mockFishRepository.save(Mockito.any(Fish.class))).then(i -> i.getArgument(0));
 
-        ResponseFishDTO fishCreatedByService = service.createOrEditFish(dto);
+        fishService.setFishRepository(mockFishRepository);
+        when(mockFishRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(mockFishRepository.save(any(Fish.class))).then(i -> i.getArgument(0));
+        when(mockOwnerService.convertDTOToOwner(any(RequestOwnerDTO.class))).thenReturn(owner);
+        when(mockOwnerService.convertOwnerToDTO(any(Owner.class))).thenReturn(responseOwnerDTO);
 
-        assertEquals(fishCreatedByService.getName(), fishManuallyCreated.getName());
-        assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
-        assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
-        assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
-        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
+        ResponseFishDTO fishCreatedByService = fishService.createOrEditFish(requestFishDTO);
+
+        assertEquals(fishCreatedByService.getName(), responseFishDTO.getName());
+        assertEquals(fishCreatedByService.getAgeYears(), responseFishDTO.getAgeYears());
+        assertEquals(fishCreatedByService.getPreferredFood(), responseFishDTO.getPreferredFood());
+        assertEquals(fishCreatedByService.getId(), responseFishDTO.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), responseFishDTO.getDateOfPurchase());
+        assertEquals(fishCreatedByService.getResponseOwnerDTO(), responseFishDTO.getResponseOwnerDTO());
+
     }
 
     @Test
     void createOrEditFishWhenTheIdIsFound() {
-        RequestFishDTO dto = new RequestFishDTO(
+
+        RequestOwnerDTO requestOwnerDTO = new RequestOwnerDTO(
                 1,
+                "Peter",
+                "Jackson",
+                DateFormat.parseTimestamp("2010-05-15"),
+                "Texas 123N"
+        );
+        ResponseOwnerDTO responseOwnerDTO = new ResponseOwnerDTO(
+                1,
+                "Peter",
+                "Jackson",
+                DateFormat.parseTimestamp("2010-05-15"),
+                "Texas 123N"
+        );
+
+        RequestFishDTO requestFishDTO = new RequestFishDTO(
+                33,
                 "Goldfish",
                 2,
                 "worms",
-                "2022-07-25"
+                DateFormat.parseTimestamp("2022-07-25"),
+                requestOwnerDTO
+
+        );
+        ResponseFishDTO responseFishDTO = new ResponseFishDTO(
+                33,
+                "Goldfish",
+                2,
+                "worms",
+                DateFormat.parseTimestamp("2022-07-25"),
+                responseOwnerDTO
         );
 
-        Fish fishManuallyCreated = Fish.builder()
-                .id(1)
-                .name("Goldfish")
-                .ageYears(2)
-                .preferredFood("worms")
-                .dateOfPurchase(DateFormat.parseTimestamp("2022-07-25"))
-                .build();
+        Owner owner = Owner.builder().build();
+        Fish fish = Fish.builder().build();
 
-        service.setFishRepository(mockFishRepository);
-        when(mockFishRepository.findById(anyInt())).thenReturn(Optional.of(fishManuallyCreated));
-        when(mockFishRepository.save(Mockito.any(Fish.class))).then(i -> i.getArgument(0));
+        fishService.setFishRepository(mockFishRepository);
+        when(mockFishRepository.findById(anyInt())).thenReturn(Optional.of(fish));
+        when(mockFishRepository.save(any(Fish.class))).then(i -> i.getArgument(0));
+        when(mockOwnerService.convertDTOToOwner(any(RequestOwnerDTO.class))).thenReturn(owner);
+        when(mockOwnerService.convertOwnerToDTO(any(Owner.class))).thenReturn(responseOwnerDTO);
 
-        ResponseFishDTO fishCreatedByService = service.createOrEditFish(dto);
+        ResponseFishDTO fishCreatedByService = fishService.createOrEditFish(requestFishDTO);
 
-        assertEquals(fishCreatedByService.getName(), fishManuallyCreated.getName());
-        assertEquals(fishCreatedByService.getAgeYears(), fishManuallyCreated.getAgeYears());
-        assertEquals(fishCreatedByService.getPreferredFood(), fishManuallyCreated.getPreferredFood());
-        assertEquals(fishCreatedByService.getId(), fishManuallyCreated.getId());
-        assertEquals(fishCreatedByService.getDateOfPurchase(), fishManuallyCreated.getDateOfPurchase());
+        assertEquals(fishCreatedByService.getName(), responseFishDTO.getName());
+        assertEquals(fishCreatedByService.getAgeYears(), responseFishDTO.getAgeYears());
+        assertEquals(fishCreatedByService.getPreferredFood(), responseFishDTO.getPreferredFood());
+        assertEquals(fishCreatedByService.getId(), responseFishDTO.getId());
+        assertEquals(fishCreatedByService.getDateOfPurchase(), responseFishDTO.getDateOfPurchase());
     }
 }
